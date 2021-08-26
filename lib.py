@@ -153,15 +153,11 @@ print(counter['blue']) #'blue' 등장 횟수
 print(counter['green']) #'green' 등장 횟수
 print(dict(counter)) #사전 자료형으로 변환 색상이 key, 횟수가 value로 변환된 것을 확인 가능
 
-a = dict()
-a['red']=2
-a['blue']=3
-a['green']=1
-
-print(a)
-
-key_list=a.keys()
-value_list=a.values()
-
-for i in key_list:
-    print(i, a[i]) #한 번해 봤다. 복습 겸 dic 구현.
+#------------------------------------------
+#math : 자주 사용되는 수학적 기능을 포함
+import math
+print(math.factorial(5))
+print(math.sqrt(5))
+print(math.gcd(21,14))
+print(math.pi)
+print(math.e)
