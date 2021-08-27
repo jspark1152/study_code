@@ -98,3 +98,98 @@ def eratostenes(n):
     return list
 
 print(eratostenes(1000))
+
+#투 포인터
+
+#주어진 list의 연속된 특정 부분합을 가지는 부분 list 출력
+a = [1, -2, 9, 3, 2, 5, 4]
+
+def list_partial_sum(n):
+    count = 0
+    for i in range(len(a)):
+        sum = 0
+        for j in range(len(a)-i):   
+            sum += a[i+j]
+            if sum == n:
+                count += 1
+                print(a[i:i+j+1])
+    return count
+        
+print(list_partial_sum(7))
+
+#이를 투포인터 형식으로 수정
+#시작과 끝 포인터를 지정
+#끝 포인터를 먼저 미루고 다음 시작점을 당기는 것을 반복
+#단 음수가 포함되는 경우 문제가 발생
+a = [1, 2, 3, 2, 5]
+
+def list_partial_sum(n):
+    sum = 0
+    end = 0
+    count = 0
+    for i in range(len(a)):     
+        while sum < n and end< len(a):
+            sum += a[end]
+            end += 1
+
+        if sum == n:
+            count += 1
+            print(a[i: end])
+        sum -= a[i]
+    print(count)
+
+print(list_partial_sum(5))
+
+#주어진 두 리스트의 합집합
+
+a=[1,2,3]
+b=[4,5]
+
+def list_union(a,b):
+    a.sort()
+    b.sort()
+
+    n = len(a)
+    m = len(b)
+
+    c = [0] * (n+m) #합리스트 초기화
+
+    i=0
+    j=0
+    
+    for k in range(n+m):
+        if i < n and j < m:
+            if a[i]<=b[j]:
+                c[k] = a[i]
+                i += 1
+            else:
+                c[k] = b[j]
+                j += 1
+        elif i == n and j < m:
+            c[k] = b[j]
+            j += 1
+        elif j == m and i < n:
+            c[k] = a[i] 
+            i += 1
+        else:
+            pass
+    return c
+
+print(list_union(a,b))  
+    
+#접두사 합
+data=[10, 20, 30, 40, 50]
+
+sum=0
+prefix_sum=[]
+for i in data:
+    sum += i
+    prefix_sum.append(sum)
+
+print(prefix_sum)
+
+#구간 합
+def par_sum(l,r):
+    return prefix_sum[r-1]-prefix_sum[l-2]
+
+print(par_sum(2,3))
