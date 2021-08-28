@@ -57,6 +57,7 @@ combi=list(itertools.combinations(code, L)) #L개를 선택하는 조합, 정렬
 print(combi) #최소 모음1개 & 자음2개 규칙을 찾아야 함
 
 #모음의 개수를 카운트한 후 조건식으로 넣음
+#자음 조건은 전체 길이 - 모음의 개수가 2 이상이면 됨
 for pw in combi:
     count = 0
     for i in pw:
