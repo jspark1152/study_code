@@ -1,34 +1,11 @@
-a=[1,2,3]
-b=[2,4,5]
+t = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
 
-def list_union(a,b):
-    a.sort()
-    b.sort()
 
-    n = len(a)
-    m = len(b)
+list = [chr(i) for i in range(97,123)]
+list_a = ['a', 'e', 'i', 'o', 'u']
 
-    c = [0] * (n+m) #합리스트 초기화
+C = 6
 
-    i=0
-    j=0
-    
-    for k in range(n+m):
-        if i < n and j < m:
-            if a[i]<=b[j]:
-                c[k] = a[i]
-                i+=1 # i+1 이라고 해서 삽질했음 ㅡㅡ... 집중.
-            else:
-                c[k] = b[j]
-                j+=1
-        elif i == n and j < m:
-            c[k] = b[j]
-            j+=1
-        elif j == m and i < n:
-            c[k] = a[i] 
-            i+=1
-        else:
-            pass
-    return c
+code = [('a', 'c', 'i', 's'), ('a', 'c', 'i', 't'), ('a', 'c', 'i', 'w'), ('a', 'c', 's', 't'), ('a', 'c', 's', 'w'), ('a', 'c', 't', 'w'), ('a', 'i', 's', 't'), ('a', 'i', 's', 'w'), ('a', 'i', 't', 'w'), ('a', 's', 't', 'w'), ('c', 'i', 's', 't'), ('c', 'i', 's', 'w'), ('c', 'i', 't', 'w'), ('c', 's', 't', 'w'), ('i', 's', 't', 'w')]
 
-print(list_union(a,b))
+print(''.join(code[0]))
