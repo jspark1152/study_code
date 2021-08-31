@@ -176,8 +176,6 @@ N, M = map(int, input().split())
 print('캐릭터의 위치 (A, B) / 캐릭터의 시선 결정')
 A, B, d = map(int, input().split())
 
-chr_sta = [A, B, d]
-
 print('장소 커스텀 육지 / 바다')
 world = [[0]*M for _ in range(N)]
 for i in range(N):
@@ -189,70 +187,69 @@ mark.append([A, B]) #시작 지점도 가본 곳
 
 #왼쪽 방향처리? 예를 들어 현재 시선이 북쪽이면 서쪽을 처리
 #0 > 3 > 2 > 1 > 0
-def direction(a):
-    a[2] -= 1
-    if a[2] == -1:
-        a[2] = 3
+def rot_left(a):
+    a -= 1
+    if a == -1:
+        a = 3
 
-A = chr_sta[0]
-B = chr_sta[1]
+cont = 0
 stop = 0
 
 while stop == 0:
-    if chr_sta[2] == 1:
-        direction(chr_sta)
-        B -= 1
-        if [A, B] not in mark and B > 0 and world[A-1][B-1] == 0:
+    if d == 0:
+        if [A-1, B] not in mark and world[A-1][B] == 0:
+            rot_left(d)
+            A -= 1
             mark.append([A, B])
-            chr_sta[1] -= 1
+            cont = 0
         else:
-            pass
-    elif chr_sta[2] == 0:
-        direction(chr_sta)
-        A -= 1
-        if [A, B] not in mark and A > 0 and world[A-1][B-1] == 0:
+            rot_left(d)
+            cont += 1
+    elif d == 3:
+        if [A, B+1] not in mark and world[A][B+1] == 0:
+            rot_left(d)
+            B += 1
             mark.append([A, B])
-            chr_sta[0] -= 1
+            cont = 0
         else:
-            pass
-    elif chr_sta[2] == 3:
-        direction(chr_sta)
-        B += 1
-        if [A, B] not in mark and B < 9 and world[A-1][B-1] == 0:
+            rot_left(d)
+            cont += 1
+    elif d == 2:
+        if [A+1, B] not in mark and world[A+1][B] == 0:
+            rot_left(d)
+            A += 1
             mark.append([A, B])
-            chr_sta[1] += 1
+            cont = 0
         else:
-            pass
-    elif chr_sta[2] == 2:
-        direction(chr_sta)
-        A += 1
-        if [A, B] not in mark and A < 9 and world[A-1][B-1] == 0:
+            rot_left(d)
+            cont += 1
+    elif d == 1:
+        if [A, B-1] not in mark and world[A][B-1] == 0:
+            rot_left(d)
+            B -= 1
             mark.append([A, B])
-            chr_sta[0] += 1
+            cont = 0
         else:
-            pass
-    elif [chr_sta[0]+1, chr_sta[1]] in mark and [chr_sta[0]-1, chr_sta[1]] in mark and [chr_sta[0], chr_sta[1]+1] in mark and [chr_sta[0], chr_sta[1]-1] in mark:
-        if chr_sta[2] == 3:
-            chr_sta[0] += 1
-            if world[chr_sta[0]][chr_sta[1]] == 1 or chr_sta[0] > 8:
-                stop += 1
-        elif chr_sta[2] == 2:
-            chr_sta[1] -= 1
-            if world[chr_sta[0]][chr_sta[1]] == 1 or chr_sta[1] < 1:
-                stop += 1
-        elif chr_sta[2] == 1:
-            chr_sta[0] -= 1
-            if world[chr_sta[0]][chr_sta[1]] == 1 or chr_sta[0] < 1:
-                stop += 1
-        elif chr_sta[2] == 0:
-            chr_sta[1] += 1
-            if world[chr_sta[0]][chr_sta[1]] == 1 or chr_sta[1] > 8:
-                stop += 1
+            rot_left(d)
+            cont += 1
+    elif cont == 4:
+        if d == 0 and world[A][B+1] == 0:
+            B += 1
+            mark.append([A, B])
+            cont = 0
+        elif d == 3 and world[A+1][B] == 0:
+            A += 1
+            mark.append([A, B])
+            cont = 0
+        elif d == 2 and world[A][B-1] == 0:
+            B -= 1
+            mark.append([A, B])
+            cont = 0
+        elif d == 1 and world[A-1][B] == 0:
+            A -= 1
+            mark.append([A, B])
+            cont = 0
         else:
-            pass    
-
+            stop += 1
+print(mark)
 print(len(mark))
-
-
-
-
