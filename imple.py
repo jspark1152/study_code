@@ -237,7 +237,7 @@ def check_back(A, B, d):
         else:
             return 0
     elif d == 1:
-        if B-1 < 0 and world[A][B-1] == 1:
+        if B-1 < 0 or world[A][B-1] == 1:
             return 1
         else:
             return 0
@@ -295,39 +295,39 @@ def move_back(d):
     elif d == 1:
         B -= 1
 
-stop = 0
 turn = 0
-turn1 = 0
+
 while True:
-    while turn !=4:
+    while turn != 4:
         if check_left(A, B, d) == 0 and check_first(A, B, d) == 0:
             rot_left()
             move_for(d)
             mark.append([A, B])
             turn = 0
+            print(d)
         elif check_left(A, B, d) == 0 and check_first(A, B, d) == 1:
             rot_left()
             turn += 1
+            print(d)
         elif check_left(A, B, d) == 1:
             rot_left()
             turn += 1
+            print(d)
         else:
             pass
 
-    while turn != 0:
-        if check_back(A, B, d) == 0:
-            move_back(d)
-            turn = 0
-            turn1 = 0
-        elif check_back(A, B, d) == 1:
-            rot_left()
-            turn1 += 1
-        elif turn1 == 4:
-            break
+    move_back(d)
 
+    if world[A][B] == 0:
+        turn = 0
+    else:
+        break
+    
+ 
 print(mark)
 print(len(mark))
+
 #자체 평가 : 드디어 해냄. 함수 사용하는 방향으로 시도하는 과정에서 글로벌 변수에 관한 것도 다시 확인하게 됨.
 #반복문 사용 중에 논리 오류가 발생했었는데 잘 해결
 #확실히 스텝을 밟아가는 과정이 길어질수록 오류도 많이 범하게 됨..
-#문제 발생 : 뒤로 이동하는 알고리즘에서 오류 발견;;
+#문제 발생 : 뒤로 이동하는 알고리즘에서 오류 발견;; > 오류인줄 알았는데 아니네 Good
