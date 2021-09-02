@@ -185,71 +185,149 @@ for i in range(N):
 mark = []
 mark.append([A, B]) #시작 지점도 가본 곳
 
+print(mark)
+
+#순서
+#1. 갈 곳이 육지인지
+#2. 갈 곳이 처음 가는 곳인지
+#3. 앞으로 이동 여부 결정
+#4. 앞으로 이동 못하는 경우 뒤로 이동할 수 있는지 여부 결정
+
+#1st issue : xy평면 좌표로 착각
+#2nd issue : 함수 정의시 global 변수 놓침
+
+#육지인지 체크
+def check_left(A, B, d):
+    if d == 0:
+        if B-1 >= 0 and world[A][B-1] == 0:
+            return 0 #0은 육지를 의미
+        else:
+            return 1 #1은 바다를 의미
+    elif d == 3:
+        if A+1 <= N-1 and world[A+1][B] == 0:
+            return 0
+        else:
+            return 1
+    elif d == 2:
+        if B+1 <= M-1 and world[A][B+1] == 0:
+            return 0
+        else:
+            return 1
+    elif d == 1:
+        if A-1 >= 0 and world[A-1][B] == 0:
+            return 0
+        else:
+            return 1
+
+#뒤로 이동시 바다인지 여부
+def check_back(A, B, d):
+    if d == 0:
+        if A+1 > N-1 or world[A+1][B] == 1:
+            return 1 #1은 바다를 의미
+        else:
+            return 0 #0은 육지를 의미
+    elif d == 3:
+        if B+1 > M-1 or world[A][B+1] == 1:
+            return 1
+        else:
+            return 0
+    elif d == 2:
+        if A-1 < 0 or world[A-1][B] == 1:
+            return 1
+        else:
+            return 0
+    elif d == 1:
+        if B-1 < 0 and world[A][B-1] == 1:
+            return 1
+        else:
+            return 0
+
+#갔었던 장소인지 확인
+def check_first(A, B, d):
+    if d == 0:
+        if [A, B-1] not in mark:
+            return 0 #0은 가본 적 없는 곳
+        else:
+            return 1 #1은 가본 적 있는 곳
+    elif d == 3:
+        if [A+1, B] not in mark:
+            return 0
+        else:
+            return 1
+    elif d == 2:
+        if [A, B+1] not in mark:
+            return 0
+        else:
+            return 1
+    elif d == 1:
+        if [A-1, B] not in mark:
+            return 0
+        else:
+            return 1
+
 #왼쪽 방향처리? 예를 들어 현재 시선이 북쪽이면 서쪽을 처리
 #0 > 3 > 2 > 1 > 0
-def rot_left(a):
-    a -= 1
-    if a == -1:
-        a = 3
+def rot_left():
+    global d
+    d -= 1
+    if d == -1:
+        d = 3
 
-cont = 0
-stop = 0
-
-while stop == 0:
+def move_for(d):
+    global A, B
     if d == 0:
-        if [A-1, B] not in mark and world[A-1][B] == 0:
-            rot_left(d)
-            A -= 1
-            mark.append([A, B])
-            cont = 0
-        else:
-            rot_left(d)
-            cont += 1
+        A -= 1
     elif d == 3:
-        if [A, B+1] not in mark and world[A][B+1] == 0:
-            rot_left(d)
-            B += 1
-            mark.append([A, B])
-            cont = 0
-        else:
-            rot_left(d)
-            cont += 1
+        B -= 1
     elif d == 2:
-        if [A+1, B] not in mark and world[A+1][B] == 0:
-            rot_left(d)
-            A += 1
-            mark.append([A, B])
-            cont = 0
-        else:
-            rot_left(d)
-            cont += 1
+        A += 1
     elif d == 1:
-        if [A, B-1] not in mark and world[A][B-1] == 0:
-            rot_left(d)
-            B -= 1
+        B += 1
+
+def move_back(d):
+    global A, B
+    if d == 0:
+        A += 1
+    elif d == 3:
+        B += 1
+    elif d == 2:
+        A -= 1
+    elif d == 1:
+        B -= 1
+
+stop = 0
+turn = 0
+turn1 = 0
+while True:
+    while turn !=4:
+        if check_left(A, B, d) == 0 and check_first(A, B, d) == 0:
+            rot_left()
+            move_for(d)
             mark.append([A, B])
-            cont = 0
+            turn = 0
+        elif check_left(A, B, d) == 0 and check_first(A, B, d) == 1:
+            rot_left()
+            turn += 1
+        elif check_left(A, B, d) == 1:
+            rot_left()
+            turn += 1
         else:
-            rot_left(d)
-            cont += 1
-    elif cont == 4:
-        if d == 0 and world[A][B+1] == 0:
-            B += 1
-            mark.append([A, B])
-            cont = 0
-        elif d == 3 and world[A+1][B] == 0:
-            A += 1
-            mark.append([A, B])
-            cont = 0
-        elif d == 2 and world[A][B-1] == 0:
-            B -= 1
-            mark.append([A, B])
-            cont = 0
-        elif d == 1 and world[A-1][B] == 0:
-            A -= 1
-            mark.append([A, B])
-            cont = 0
-        else:
-            stop += 1
+            pass
+
+    while turn != 0:
+        if check_back(A, B, d) == 0:
+            move_back(d)
+            turn = 0
+            turn1 = 0
+        elif check_back(A, B, d) == 1:
+            rot_left()
+            turn1 += 1
+        elif turn1 == 4:
+            break
+
 print(mark)
 print(len(mark))
+#자체 평가 : 드디어 해냄. 함수 사용하는 방향으로 시도하는 과정에서 글로벌 변수에 관한 것도 다시 확인하게 됨.
+#반복문 사용 중에 논리 오류가 발생했었는데 잘 해결
+#확실히 스텝을 밟아가는 과정이 길어질수록 오류도 많이 범하게 됨..
+#문제 발생 : 뒤로 이동하는 알고리즘에서 오류 발견;;
