@@ -1,11 +1,3 @@
-a = 1
-b = 2
-c = 3
+stack = [[1, 0], [2,0]]
 
-abc = [a, b, c]
-
-print(abc, b)
-
-b=3
-
-print(abc, b)
+print(stack[-1])
