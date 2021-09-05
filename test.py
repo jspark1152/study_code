@@ -1,70 +1,47 @@
-print('얼음틀의 사이즈를 입력')
+print('미로 사이즈 결정')
 N, M = map(int, input().split())
 
-case = [[0] * M for _ in range(N)]
-
+graph = []
+print('미로 정보 입력')
 for i in range(N):
-    case[i] = list(map(int, input().split()))
-
-
-#0인 값들을 노드 처리를 해야할텐데 어떻게?
+    graph.append(list(map(int, input())))
 
 from collections import deque
 
-hole_list = []
+mark = deque()
 
-for i in range(N):
-    for j in range(M):
-        if case[i][j] == 0:
-            hole_list.append([i, j])
+def end():
+    global k
+    k += 1
 
-print('Hole List = ', hole_list)
-
-
-mark = []
-node = [[] for _ in range(N*M)]
-stack = []
-
-def ice_node(stack):
-    global n
-    global node
-    global mark
-    global hole_list
+def bfs(x, y, visited, graph):
+    global k
+    if x<=-1 or x>=N or y<=-1 or y>=M:
+        return False
     
-    while stack:
-        
-        a = stack[-1]
-        
-        if a not in node[n]:
-            node[n].append(a)
-        if a not in mark:
-            mark.append(a)
-            
-        for i in [1, -1]:
-            if [a[0]+i, a[1]] in hole_list and [a[0]+i, a[1]] not in mark:
-                stack.append([a[0]+i, a[1]])
-                ice_node(stack)
-            elif [a[0], a[1]+i] in hole_list and [a[0], a[1]+i] not in mark:
-                stack.append([a[0], a[1]+i])
-                ice_node(stack)
-            else:
-                pass
-        
-        stack.pop()
-        
-        
-        
-n = 0
+    if graph[x][y]==1 and visited[x][y]==False:
+        mark.append([x, y])
+        print(mark)
+        visited[x][y] = True
+    else:
+        return False
 
-for m in range(len(hole_list)):
-    a = hole_list[m]
-    stack.append(a)
-    
-    if a not in mark:
-        ice_node(stack)
-    
-    n += 1
+    if [N-1, M-1] in mark:
+        end()
 
-node = [i for i in node if len(i) != 0]
+    a = mark.popleft()
 
-print('node : ', node)
+    if a != [N-1, M-1]:
+        k += 1
+        bfs(a[0]+1, a[1], visited, graph)
+        bfs(a[0]-1, a[1], visited, graph)
+        bfs(a[0], a[1]+1, visited, graph)
+        bfs(a[0], a[1]-1, visited, graph)
+    return False
+
+visited=[[False]*M for _ in range(N)]
+
+k=0
+bfs(0, 0, visited, graph)
+
+print(k)
