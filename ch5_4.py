@@ -24,35 +24,55 @@ for i in range(N):
 from collections import deque
 
 mark = deque()
+mark1 = deque()
 
-def bfs(x, y, visited):
-    global mark
-    global k
-    if x <= -1 or x >= N or y <= -1 or y >= M:
-        return False
+def bfs(x, y, visited, graph):
+    global count
     
     if graph[x][y] == 1 and visited[x][y] == False:
         mark.append([x, y])
         visited[x][y] = True
-        print(mark)
-       
-    else:
-        return False
 
-    while [N-1, M-1] not in mark:
-            a = mark.popleft()
-            k+=1
+    while [N-1, M-1] not in mark: #최종점이 mark에 포함되는 순간 종료
+        for i in range(len(mark)): #mark 원소 개수만큼 반복
+            a = mark.popleft() #맨 앞 원소 추출하여 이 원소 상하좌우를 확인
+            
+            if a[0]+1 < N: #왜 굳이 이렇게 조건을.. 아래 if문과 함께 하니 list range 벗어나는 오류 발생;; 왜지?
+                if graph[a[0]+1][a[1]] == 1 and visited[a[0]+1][a[1]] == False:
+                    mark1.append([a[0]+1, a[1]]) #바로 mark에 삽입이 불가능하기 때문에 mark1에 삽입
+                    visited[a[0]+1][a[1]] = True
 
-            bfs(a[0]+1, a[1], visited)
-            bfs(a[0], a[1]+1, visited)
-            bfs(a[0]-1, a[1], visited)
-            bfs(a[0], a[1]-1, visited)
-               
-k = 0
+            if a[0]-1 >= 0:
+                if graph[a[0]-1][a[1]] == 1 and visited[a[0]-1][a[1]] == False:
+                    mark1.append([a[0]-1, a[1]])
+                    visited[a[0]-1][a[1]] = True
+
+            if a[1]+1 < M:
+                if graph[a[0]][a[1]+1] == 1 and visited[a[0]][a[1]+1] == False:
+                    mark1.append([a[0], a[1]+1])
+                    visited[a[0]][a[1]+1] = True
+
+            if a[1]-1 >= 0:
+                if graph[a[0]][a[1]-1] == 1 and visited[a[0]][a[1]-1] == False:
+                    mark1.append([a[0], a[1]-1])
+                    visited[a[0]][a[1]-1] = True
+            
+        for j in range(len(mark1)): #mark1에 들어간 데이터를 그대로 mark에 삽입과 동시에 mark1은 빈 list로 초기화
+            b = mark1.popleft()
+            mark.append(b)
+        
+        count += 1 #모든 사이클에 대한 횟수 증가
+    
+    count += 1 #마지막 칸 추가
+        
+
+count = 0
 visited = [[False]*M for _ in range(N)]
-bfs(0, 0, visited)
 
-print(k+1)
-#자체 평가 : 제대로 한게 맞나? 뭔가 어거지로 구현이 된듯한 느낌
-#큐를 이용하여 동시에 1인 곳을 통해 퍼져나간다는 아이디어로
-#역시 오류 발생
+bfs(0, 0, visited, graph)
+
+print(count)
+
+#자체 평가 : 해냈음. 동시 다발적으로 이동해가는 것에 포인트를 두고 구현.
+#후련함. 여러 경우를 모두 대입해봐도 정답 출력. Good.
+#알고리즘 사고 방식이 낯설어서 아직 어려움이 있음

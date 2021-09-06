@@ -9,39 +9,52 @@ for i in range(N):
 from collections import deque
 
 mark = deque()
-
-def end():
-    global k
-    k += 1
+mark1 = deque()
 
 def bfs(x, y, visited, graph):
-    global k
-    if x<=-1 or x>=N or y<=-1 or y>=M:
-        return False
+    global count
     
-    if graph[x][y]==1 and visited[x][y]==False:
+    if graph[x][y] == 1 and visited[x][y] == False:
         mark.append([x, y])
-        print(mark)
         visited[x][y] = True
-    else:
-        return False
 
-    if [N-1, M-1] in mark:
-        end()
+    while [N-1, M-1] not in mark:
+        for i in range(len(mark)):
+            a = mark.popleft()
+            
+            if a[0]+1 < N:
+                if graph[a[0]+1][a[1]] == 1 and visited[a[0]+1][a[1]] == False:
+                    mark1.append([a[0]+1, a[1]])
+                    visited[a[0]+1][a[1]] = True
 
-    a = mark.popleft()
+            if a[0]-1 >= 0:
+                if graph[a[0]-1][a[1]] == 1 and visited[a[0]-1][a[1]] == False:
+                    mark1.append([a[0]-1, a[1]])
+                    visited[a[0]-1][a[1]] = True
 
-    if a != [N-1, M-1]:
-        k += 1
-        bfs(a[0]+1, a[1], visited, graph)
-        bfs(a[0]-1, a[1], visited, graph)
-        bfs(a[0], a[1]+1, visited, graph)
-        bfs(a[0], a[1]-1, visited, graph)
-    return False
+            if a[1]+1 < M:
+                if graph[a[0]][a[1]+1] == 1 and visited[a[0]][a[1]+1] == False:
+                    mark1.append([a[0], a[1]+1])
+                    visited[a[0]][a[1]+1] = True
 
-visited=[[False]*M for _ in range(N)]
+            if a[1]-1 >= 0:
+                if graph[a[0]][a[1]-1] == 1 and visited[a[0]][a[1]-1] == False:
+                    mark1.append([a[0], a[1]-1])
+                    visited[a[0]][a[1]-1] = True
+            
+        for j in range(len(mark1)):
+            b = mark1.popleft()
+            mark.append(b)
+        
+        count += 1
+    
+    count += 1 #마지막 칸 추가
+        
 
-k=0
+count = 0
+visited = [[False]*M for _ in range(N)]
+
 bfs(0, 0, visited, graph)
 
-print(k)
+print(count)
+        
