@@ -55,7 +55,7 @@ def make_one(mark, count):
     count += 1
 
     if 1 in mark[count]:
-        return count
+        return
     
     make_one(mark, count)
 
