@@ -13,51 +13,46 @@ for i in range(M):
 print(graph)
 
 #진입 차수 계산
-deg = [0] * (N+1)
-
-for i in graph:
-    deg[i[1]] += 1
-
-visited = [0] * (N+1)
-
-def deg_zero(deg):
-    zero = []
-    for i in range(1, N+1):
-        if deg[i] == 0 and visited[i] == 0:
-            zero.append(i)
-    return zero
-
-def top_sort(n):
+def deg_zero(graph):
+    deg = [0] * (N+1)
     for i in graph:
-        if i[0] == n:
-            graph.remove(i)
+        deg[i[1]] += 1
+    return deg
 
-q = deque()
+deg = deg_zero(graph)
+print(deg)
+
 map = []
+q = deque()
 
-zero = []
-for i in range(1, N+1):
-    if deg[i] == 0 and visited[i] == 0:
-        zero.append(i)
+def input_q(deg, q):
+    for i in range(1, N+1):
+        if deg[i] == 0 and i not in map and i not in q:
+            q.append(i)
+    return
 
-for i in zero:
-    q.append(i)
-
-print(q)
+input_q(deg, q)
 
 while q:
     n = q.popleft()
-    visited[n] = 1
     map.append(n)
+
+    #graph에서 n으로 부터 향하는 방향 성분 제거
+    remove_set = []
     for i in graph:
         if i[0] == n:
-            graph.remove(i)
-    deg = [0] * (N+1)
-    zero = []
-    for i in range(1, N+1):
-        if deg[i] == 0 and visited[i] == 0:
-            zero.append(i)
-    for i in zero:
-        q.append(i)
+            remove_set.append(i)
+    graph = [i for i in graph if i not in remove_set]
+    print(graph)
+
+    #진입 차수 확인
+    deg = deg_zero(graph)
+    print(deg)
+    
+    #q에 다시 성분 삽입
+    input_q(deg, q)
+    print(q)
 
 print(map)
+
+#자체 평가 : 스텝마다 print로 확인하면서 오류 수정해가며 작성. 알고리즘대로 나름 잘 짠듯 함.
