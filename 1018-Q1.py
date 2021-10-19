@@ -21,14 +21,16 @@ fear.sort()
 
 print(fear)
 
-result = 0
+result = 0 
 count = 0
+
 for i in fear:
     count += 1
-    if count >= i:
+    if count == i:
         result += 1
-        count = 0 #그룹 수 증가와 동시에 그룹 인원 0 초기화
+        count = 0
 
 print(result)
+
 
 #아이디어 기억해두자
