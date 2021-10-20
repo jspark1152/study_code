@@ -18,12 +18,31 @@ cash.sort()
 
 target = 1
 
-for x in cash:
-
-    if target < x:
+for i in cash:
+    if target < i:
         break
-    target += x
+    target += i
 
 print(target)
 
 #어렵네 이거 ;;
+#구현 아이디어가 어려움
+#조합하여 얻을 수 있는 금액 리스트는 어떻게?
+
+from itertools import product
+switch = [0, 1]
+res = list(product(switch, repeat = 5))
+print(res)
+
+total = []
+for i in res:
+    sum = 0
+    for j in range(N):
+        sum += cash[j]*i[j]
+    if sum not in total:
+        total.append(sum)
+
+print(total)
+
+#이 방법으로 구현하는 것도 괜찮을 것 같음
+#조합 이용말고는 방법이 없는가..
