@@ -1,3 +1,4 @@
-stack = [[2,0]]
+list1 = list(map(str, input()))
 
-print(stack[-1])
+for i in list1:
+    print(i, end = '')
