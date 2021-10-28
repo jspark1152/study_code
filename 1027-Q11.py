@@ -108,13 +108,12 @@ while stop == 0:
     else:
         #사과가 없기 때문에 꼬리 제거
         snake.popleft()
-    
+    print(snake)
     #방향 확인
     #회전이 안되네 왜지?
     #rotation 함수에서 direction 변수를 global로 지정했어야...
     for i in range(len(rota)):
         if sec == rota[i][0]:
-            print(type(rota[i][1]))
             rotation(rota[i][1])
 
     print(direction)
