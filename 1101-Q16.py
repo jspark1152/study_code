@@ -52,11 +52,56 @@ def block_gas(emp):
     lab_0[emp[1][0]][emp[1][1]] = 1
     lab_0[emp[2][0]][emp[2][1]] = 1
     return lab_0
-        
-        #gas 퍼트리기
+
+#list index out of range : 내가 자주 범하는 실수인데 특히 가정문에서 내가 착각하는것이 없는 값은 확인을 안하겠지라고 생각했던거 같음
+#근데 가정 조건문에서도 일단 해당 리스트를 뒤져보기 때문에 반드시 인덱스 맞춰줘야함 
+#gas 퍼트리기
+def gas(lab_0, i, j):
+    if i-1 >= 0:
+        if lab_0[i-1][j] == 0:
+            lab_0[i-1][j] = 2
+            gas(lab_0, i-1, j)
+
+    if j-1 >= 0:
+        if lab_0[i][j-1] == 0 and j-1 >= 0:
+            lab_0[i][j-1] = 2
+            gas(lab_0, i, j-1)
+
+    if i+1 < N:
+        if lab_0[i+1][j] == 0 and i+1 < N:
+            lab_0[i+1][j] = 2
+            gas(lab_0, i+1, j)
+
+    if j+1 < M:
+        if lab_0[i][j+1] == 0 and j+1 < M:
+            lab_0[i][j+1] = 2
+            gas(lab_0, i, j+1)
+
+result = 0
 
 for emp in sel_empty:
     lab_0 = block_gas(emp)
-    print(lab_0)
-
     
+    for i in range(N):
+        for j in range(M):
+            if lab_0[i][j] == 2:
+                
+                gas(lab_0, i, j)
+    print(lab_0)
+    count = 0
+    for i in range(N):
+        for j in range(M):
+            if lab_0[i][j] == 0:
+                count += 1
+    
+    result = max(result, count)
+    
+print(result)
+
+#자체 평가 : 어찌 저찌 구현 성공. 꽤나 오래 걸렸음. 특히 block_gas 함수 작성할 때 copy 개념에서 막혔음.
+#그나저나 이게 맞는지..
+#모든 경우를 다 뒤져서 그중에 가장 0이 많은 값을 취하는 프로그램인데.. 어려웠다 이건
+#음.. 솔루션에서 항상 보면 작성하는 방식이 좀 색다름
+#아이디어는 같은데 step 을 좀 더 나누어 짜는듯한 느낌
+#와.. 재귀표현을 저렇게 했네.. 답안이라 그런가 신선하다
+#재귀표현을 잘하면 뭔가 좀더 코드 자체가 세련돼 보이는 듯함
