@@ -17,6 +17,48 @@ N, x = map(int, input().split())
 print('수열 입력')
 array0 = list(map(int, input().split()))
 
+#이진 탐색으로 구현
+def find_first(list, target, start, end):
+    while start <= end:
+        mid = (start+end)//2
+        if list[mid] == target:
+            if list[mid-1] != target:
+                return mid
+            else:
+                end = mid-1
+        elif list[mid] > target:
+            end = mid-1
+        elif list[mid] < target:
+            if list[mid+1] == target:
+                return mid+1
+            else:
+                start = mid+1
+    return None
+
+def find_last(list, target, start, end):
+    while start <= end:
+        mid = (start+end)//2
+        if list[mid] == target:
+            if list[mid+1] != target:
+                return mid
+            else:
+                start = mid+1
+        elif list[mid] > target:
+            start = mid+1
+        elif list[mid] < target:
+            if list[mid-1] == target:
+                return mid-1
+            else:
+                end = mid-1
+    return None
+
+s = find_first(array0, x, 0, N-1)
+e = find_last(array0, x, 0, N-1)
+print(s, e)
+
+#오류 : mid+1 or mid-1 의 list 값 호출에서 오류 발생;; 
+
+'''
 result = 0
 for i in range(len(array0)):
     if array0[i] == x:
@@ -26,3 +68,8 @@ if result == 0:
     print(-1)
 else:
     print(result)
+'''
+
+#자체 평가 : 의도가 이게 아닌듯 함. for 문 자체 시간복잡도가 O(N) 으로 알고 있...
+#이진 탐색으로 구현해야하나?\
+
