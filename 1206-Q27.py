@@ -22,41 +22,57 @@ def find_first(list, target, start, end):
     while start <= end:
         mid = (start+end)//2
         if list[mid] == target:
-            if list[mid-1] != target:
-                return mid
+            if mid > start:
+                if list[mid-1] != target:
+                    return mid
+                else:
+                    end = mid-1
             else:
-                end = mid-1
+                return mid
         elif list[mid] > target:
             end = mid-1
         elif list[mid] < target:
-            if list[mid+1] == target:
-                return mid+1
+            if mid < end:
+                if list[mid+1] == target:
+                    return mid+1
+                else:
+                    start = mid+1
             else:
-                start = mid+1
+                return mid
     return None
 
 def find_last(list, target, start, end):
     while start <= end:
         mid = (start+end)//2
         if list[mid] == target:
-            if list[mid+1] != target:
-                return mid
+            if mid < end:
+                if list[mid+1] != target:
+                    return mid
+                else:
+                    start = mid+1
             else:
-                start = mid+1
+                return mid
         elif list[mid] > target:
             start = mid+1
         elif list[mid] < target:
-            if list[mid-1] == target:
-                return mid-1
+            if mid > start:
+                if list[mid-1] == target:
+                    return mid-1
+                else:
+                    end = mid-1
             else:
-                end = mid-1
+                return mid
     return None
 
 s = find_first(array0, x, 0, N-1)
 e = find_last(array0, x, 0, N-1)
-print(s, e)
 
-#오류 : mid+1 or mid-1 의 list 값 호출에서 오류 발생;; 
+if s > e:
+    print(-1)
+else:
+    print(e-s+1)
+
+#오류 : mid+1 or mid-1 의 list 값 호출에서 오류 발생;; >> 해결 / 앞으로 코딩할 때 유의
 
 '''
 result = 0
