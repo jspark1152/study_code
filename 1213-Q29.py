@@ -26,3 +26,5 @@ for _ in range(N):
     
 house.sort()
 print(house)
+
+#아 겁나 생각이 안난다.. 며칠째 고민중.. 조합으로 뽑아내서 다하는건 아닌거 같은데 ㅡㅡ
