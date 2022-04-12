@@ -20,3 +20,4 @@ A = str(input())
 print('B = ')
 B = str(input())
 
+print(A, B)
