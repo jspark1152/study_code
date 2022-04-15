@@ -21,3 +21,28 @@ print('B = ')
 B = str(input())
 
 print(A, B)
+
+def edit_dist(A, B):
+    N = len(A)
+    M = len(B)
+    
+    dp = [[0]*(M+1) for _ in range(N+1)]
+    
+    for i in range(1, N+1):
+        dp[i][0] = i
+    for j in range(1, M+1):
+        dp[0][j] = j
+    
+    for i in range(1, N+1):
+        for j in range(1, M+1):
+            #문자가 같은 경우
+            if A[i-1] == B[j-1]:
+                dp[i][j] = dp[i-1][j-1]
+            #다른 경우
+            else:
+                dp[i][j] = 1 + min(dp[i-1][j], dp[i][j-1], dp[i-1][j-1])
+    return dp[N][M]
+
+print(edit_dist(A, B))
+
+#자체 평가 : 흠.. 이 방식을 그냥 외우는게 속편할듯.. 아무리 고민해봐도 알고리즘이 안떠오를땐 이 방식을 기계적으로 떠올려야 할듯
