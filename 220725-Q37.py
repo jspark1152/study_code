@@ -26,3 +26,12 @@ for i in range(m):
     bus.append(l)
 
 print(bus)
+
+map = [[0]*n for i in range(n)]
+
+print(map)
+
+for i in bus:
+    map[i[0]-1][i[1]-1] = i[2]
+
+print(map)
