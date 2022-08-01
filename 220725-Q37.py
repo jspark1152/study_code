@@ -19,19 +19,29 @@ n = int(input())
 
 print('버스 수 m 입력')
 m = int(input())
-bus = []
+
+INF = int(1e9)
+town = [[INF]*(n+1) for i in range(n+1)]
+for i in range(1, n+1):
+    town[i][i] = 0
+
 print('버스 정보 입력')
 for i in range(m):
-    l = list(map(int, input().split())) #와 너무 안햇나 이거 기억이 안나네 ㅋㅋㅋ
-    bus.append(l)
+    a, b, c = map(int, input().split())
+    if c < town[a][b]:
+        town[a][b] = c
 
-print(bus)
+for k in range(1, n+1):
+    for a in range(1, n+1):
+        for b in range(1, n+1):
+            town[a][b] = min(town[a][b], town[a][k] + town[k][b])
 
-map = [[0]*n for i in range(n)]
+print(town)
 
-print(map)
+for i in range(1, n+1):
+    for j in range(1, n+1):
+        if town[i][j] == INF:
+            town[i][j] = 0
 
-for i in bus:
-    map[i[0]-1][i[1]-1] = i[2]
-
-print(map)
+for i in range(1, n+1):
+    print(town[i][1:])

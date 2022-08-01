@@ -1,3 +1,2 @@
-a= abs(-1)
-
-print(a)
+a, b, c = map(int, input().split())
+print(a, b, c)
