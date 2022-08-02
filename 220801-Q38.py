@@ -14,7 +14,38 @@ A번 학생의 성적이 B번 학생보다 낮으면 A에서 B로 가리키도�
 출력 조건 : 성적 순위를 정확히 알 수 있는 학생이 몇명인지 출력
 '''
 
+#A >> B 비교. A에서 B로 이동 가능. 최단 거리 문제로 볼 수 있음.
+#단 가능 여부를 0 으로 봄
+#score[a][b] = 0 : a 번 학생 성적 < b 번 학생 성적
+
 print('학생 수 N과 성적 비교 자료 수 M 입력')
 N, M = map(int, input().split())
 
+INF = int(1e9)
+score = [[INF]*(N+1) for _ in range(N+1)]
+for i in range(1, N+1):
+    score[i][i] = 0
+
 print('성적 비교 자료 A B 입력')
+for _ in range(M):
+    A, B = map(int, input().split())
+    score[A][B] = 0
+
+for k in range(1, N+1):
+    for a in range(1, N+1):
+        for b in range(1, N+1):
+            score[a][b] = min(score[a][b], score[a][k]+score[k][b])
+
+print(score)
+
+result = 0
+
+for i in range(1, N+1):
+    point = 0
+    for j in range(1, N+1):
+        if score[i][j] == 0 or score[j][i] == 0:
+            point += 1
+    if point == 6:
+        result += 1 #최종적으로 본인 포함 모든 학생들과 비교가 가능(이동이 가능)한 경우를 의미
+
+print(result)
