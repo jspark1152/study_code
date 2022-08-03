@@ -13,16 +13,49 @@
 출력 조건 : 최소 비용을 한줄에 하나씩 출력
 '''
 
+import heapq
+
 print('테스트 케이스 T 입력')
 T = int(input())
+
+#상 / 우 / 하 / 좌
+dx = [-1, 0, 1, 0]
+dy = [0 , 1, 0, -1]
+
+INF = int(1e9)
 
 result = []
 print('공간 크기 N 과 이동 비용 정보 입력')
 for _ in range(T):
     N = int(input())
-    cost = []
+    graph = []
     for _ in range(N):
         l = list(map(int, input().split()))
-        cost.append(l)
+        graph.append(l)
+         
+    distance = [[INF]*N for _ in range(N)]
     
+    q = [(graph[0][0], 0, 0)]
+    distance[0][0] = graph[0][0]
     
+    while q:
+        dist, x, y = heapq.heappop(q)
+        
+        if distance[x][y] < dist:
+            continue
+        
+        for i in range(4):
+            nx = x + dx[i]
+            ny = y + dy[i]
+            
+            if nx < 0 or nx >= N or ny < 0 or ny >= N:
+                continue
+            
+            cost = dist + graph[nx][ny]
+            if cost < distance[nx][ny]:
+                distance[nx][ny] = cost
+                heapq.heappush(q, (cost, nx, ny))
+    result.append(distance[N-1][N-1])
+    
+for i in range(len(result)):
+    print(result[i])
