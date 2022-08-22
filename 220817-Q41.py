@@ -37,7 +37,7 @@ for k in range(N):
 result = 0
 for i in range(1, M):
     if route[plan[0]][i] == inf:
-        result += 1
+        result += 1 #그 도시로의 여행이 불가능하다는 것
         break
 
 if result == 0:
